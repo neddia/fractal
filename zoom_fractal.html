@@ -1,0 +1,52 @@
+<canvas id="gardun" width="1000" height="1000"></canvas>
+<script>
+    const canvas = document.getElementById("gardun");
+    const m = canvas.getContext("2d");
+    let scale = 100000; // Initial scale
+    let offsetX = -0.233; // Initial X offset
+    let offsetY = -0.655; // Initial Y offset
+    let maxIterations = 20000; // Initial max iterations
+
+    function renderFractal() {
+        m.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas for redraw
+
+        for(let y = 1; y <= canvas.height; y++) {
+            for(let x = 1; x <= canvas.width; x++) {
+                let dx = (x - canvas.width / 2) / scale + offsetX;
+                let dy = (y - canvas.height / 2) / scale + offsetY;
+                let a = dx;
+                let b = dy;
+                let t = 0;
+
+                for(t = 1; t < maxIterations; t++) {
+                    let d = a * a - b * b + dx;
+                    b = 2 * a * b + dy;
+                    a = d;
+                    if(d > 4) break; // Escape condition modified for consistency
+                }
+
+                const brightness = t * 3;
+                m.fillStyle = `rgb(${brightness}, ${t}, ${t * 0.5})`;
+                m.fillRect(x, y, 3, 3); // Draw pixel
+            }
+        }
+    }
+
+    // Listen for scroll events to zoom in and out
+    canvas.addEventListener("wheel", function(event) {
+        event.preventDefault();
+        const zoomFactor = 1.1;
+        if(event.deltaY < 0) {
+            // Zoom in
+            scale *= zoomFactor;
+            maxIterations += 1000; // Increase detail with zoom
+        } else {
+            // Zoom out
+            scale /= zoomFactor;
+            maxIterations = Math.max(20000, maxIterations - 1000); // Decrease detail with zoom out, but keep a minimum
+        }
+        renderFractal();
+    });
+
+    renderFractal(); // Initial rendering
+</script>
