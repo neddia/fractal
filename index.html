@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mandelbrot Explorer</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
+  body { font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: #ececec; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+  canvas.dragging { cursor: grabbing; }
+  #gl { display: none; }
+  #progress { position: fixed; left: 0; top: 0; height: 2px; width: 0; background: rgba(255,255,255,.7); transition: width .08s linear, opacity .3s; }
+  #hud { position: fixed; left: 12px; bottom: 12px; max-width: calc(100vw - 48px); padding: 8px 12px;
+         background: rgba(12,12,16,.62); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+         border: 1px solid rgba(255,255,255,.08); border-radius: 10px; pointer-events: none;
+         font-variant-numeric: tabular-nums; }
+  #hud.hidden { display: none; }
+  #stats b { font-weight: 600; }
+  #keys { margin-top: 4px; opacity: .68; }
+  #keys kbd { font: inherit; font-weight: 600; }
+</style>
+</head>
+<body>
+<canvas id="cpu"></canvas>
+<canvas id="gl"></canvas>
+<div id="progress"></div>
+<div id="hud">
+  <div id="stats"></div>
+  <div id="keys">scroll or double-click to zoom · drag to pan ·
+    <kbd>P</kbd> palette · <kbd>C</kbd> cycle colours · <kbd>G</kbd> GPU ·
+    <kbd>[</kbd> <kbd>]</kbd> detail · <kbd>1</kbd>–<kbd>4</kbd> places ·
+    <kbd>R</kbd> reset · <kbd>S</kbd> save PNG · <kbd>H</kbd> hide</div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
