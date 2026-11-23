@@ -274,11 +274,15 @@ function renderGpu() {
 
 const usingGpu = () => gpuWanted && gl && zoomOf() < GPU_MAX_ZOOM;
 
+// Coalesce bursts of wheel/drag events into one render. This uses a timer, not
+// requestAnimationFrame: browsers pause rAF for tabs they consider hidden (a
+// background tab, or a window opened behind another app), which left the first
+// render waiting until the page was brought to the front.
 let renderQueued = false;
 function requestRender() {
     if (renderQueued) return;
     renderQueued = true;
-    requestAnimationFrame(() => {
+    setTimeout(() => {
         renderQueued = false;
         if (usingGpu()) {
             job++;            // drop any CPU rows still in flight
@@ -294,7 +298,7 @@ function requestRender() {
             startCpuRender();
         }
         updateStats();
-    });
+    }, 0);
 }
 
 function resize() {
