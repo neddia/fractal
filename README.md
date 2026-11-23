@@ -7,12 +7,9 @@ JavaScript, with no build step and no dependencies.
 
 ## Run it
 
-Web Workers don't load from `file://`, so serve the folder:
-
-```bash
-python -m http.server 8000
-# then open http://localhost:8000
-```
+Double-click `index.html`. No server needed: the render workers are built
+in-page from a Blob URL, so they also run from `file://`. Serving the folder
+(`python -m http.server`) works too.
 
 ## Controls
 
@@ -24,6 +21,7 @@ python -m http.server 8000
 | `C` | Cycle colours |
 | `G` | Toggle GPU mode |
 | `[` / `]` | Halve / double the iteration budget |
+| `Q` | Toggle 2× supersampling (smoother edges, sharper fine detail, ~1.6× render time) |
 | `1`–`4` | Whole set, spiral arms, seahorse valley, elephant valley |
 | `R` | Reset to the whole set |
 | `S` | Save the current view as a PNG |
@@ -52,6 +50,10 @@ The URL updates with the current view (`#x,y,zoom`), so a link reopens the same 
 - **GPU mode** runs the same formula in a WebGL fragment shader. 32-bit floats
   run out of precision around 10,000× zoom, so past that it switches back to the
   CPU on its own.
+
+- **Native resolution.** The canvas is sized in device pixels
+  (`devicePixelRatio`), so Windows display scaling and high-DPI screens get
+  one computed point per physical pixel.
 
 At 1280×720 on a 24-thread machine, a typical view renders in about 130–450 ms.
 
